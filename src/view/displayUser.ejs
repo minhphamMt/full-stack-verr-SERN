@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>get CRUD</title>
+    </head>
+    <style>
+table {
+  border-collapse: collapse;
+  border: 2px solid black;
+  width: 100%;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:hover {background-color: coral;}
+</style>
+    <body>
+        <table>
+            <tr>
+                <th>email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>address</th>
+                <th>phone number</th>
+                <th>gender</th>
+                <th>role id</th>
+
+            </tr>
+            <% Data.forEach((item,index)=>{%>
+            <tr>
+                <td><%=Data[index].email %></td>
+                <td><%=Data[index].firstName %></td>
+                <td><%=Data[index].lastName %></td>
+                <td><%=Data[index].address %></td>
+                <td><%=Data[index].phoneNumber %></td>
+                <td><%=Data[index].gender %></td>
+                <td><%=Data[index].roleId %></td>
+            </tr>
+            <% }) %>
+
+        </table>
+    </body>
+</html>
