@@ -10,9 +10,9 @@ let createUser = async (data) => {
         password: hashpass,
         firstName: data.firstname,
         lastName: data.lastname,
-        address: data.adress,
+        address: data.address,
         phoneNumber: data.phonenumber,
-        gender: data.gender === 1 ? true : false,
+        gender: data.gender === "1" ? true : false,
         roleId: data.role,
       });
       resolve("ok create user sucess!");
@@ -41,4 +41,54 @@ let getAllUser = async () => {
     }
   });
 };
-module.exports = { createUser, hashUserPassWord, getAllUser };
+let getUserById = async (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({ where: { id: id }, raw: true });
+      resolve(user);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+let updateUser = async (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({
+        where: { id: data.id },
+      });
+      if (user) {
+        user.set({
+          firstName: data.firstname,
+          lastName: data.lastname,
+          address: data.address,
+        });
+        await user.save();
+        resolve();
+      } else {
+        resolve();
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+let DeleteUser = async (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({ where: { id: id } });
+      await user.destroy();
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+module.exports = {
+  createUser,
+  hashUserPassWord,
+  getAllUser,
+  getUserById,
+  updateUser,
+  DeleteUser,
+};
