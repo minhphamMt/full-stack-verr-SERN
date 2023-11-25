@@ -12,7 +12,7 @@ const handleLogin = async (req, res) => {
     let userData = await handleUserLogin(email, password);
     return res.status(200).json({
       errcode: userData.errcode,
-      messenger: userData.errmessage,
+      messenger: userData.errorMessage,
       //   email,
       //   password,
       user: userData.user ? userData.user : {},

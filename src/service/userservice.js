@@ -14,24 +14,24 @@ let handleUserLogin = (email, password) => {
           let checkpass = bcrypt.compareSync(password, user.password);
           if (checkpass) {
             userdata.errcode = 0;
-            userdata.errmessage = "ok pass is done";
+            userdata.errorMessage = "ok pass is done";
             delete user["password"];
             delete user["roleId"];
             userdata.user = user;
           } else {
             userdata.errcode = 3;
-            userdata.errmessage = "wrong pass";
+            userdata.errorMessage = "wrong pass";
           }
         } else {
           userdata.errcode = 2;
-          userdata.errmessage = `user not found`;
+          userdata.errorMessage = `user not found`;
           resolve(userdata);
         }
 
         resolve(userdata);
       } else {
         userdata.errcode = 1;
-        userdata.errmessage = `your email is isn't exist,pls try again`;
+        userdata.errorMessage = `your email is isn't exist,pls try again`;
         resolve(userdata);
       }
     } catch (err) {
