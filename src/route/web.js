@@ -1,4 +1,5 @@
 import express from "express";
+import { handleLogin } from "../controler/usercontoler";
 import {
   getHomePage,
   getMinhThu,
@@ -19,6 +20,7 @@ let initWebRoute = (app) => {
   router.get("/delete-crud", DeleteCrud);
   router.post("/post-crud", postCRUD);
   router.post("/put-crud", putCRUD);
+  router.post("/api/login", handleLogin);
   return app.use("/", router);
 };
 module.exports = initWebRoute;
