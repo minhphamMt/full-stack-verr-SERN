@@ -1,5 +1,11 @@
 import express from "express";
-import { handleLogin } from "../controler/usercontoler";
+import {
+  handleLogin,
+  handleGetAllUser,
+  handleCreateUser,
+  handleEditUser,
+  handleDeleteUser,
+} from "../controler/usercontoler";
 import {
   getHomePage,
   getMinhThu,
@@ -21,6 +27,10 @@ let initWebRoute = (app) => {
   router.post("/post-crud", postCRUD);
   router.post("/put-crud", putCRUD);
   router.post("/api/login", handleLogin);
+  router.post("/api/get-all-users", handleGetAllUser);
+  router.post("/api/create-a-user", handleCreateUser);
+  router.put("/api/edit-a-user", handleEditUser);
+  router.delete("/api/delete-a-user", handleDeleteUser);
   return app.use("/", router);
 };
 module.exports = initWebRoute;
