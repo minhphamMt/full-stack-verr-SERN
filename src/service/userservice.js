@@ -96,21 +96,22 @@ let createNew = (data) => {
       if (check === true) {
         resolve({
           errCode: 1,
-          message: "your email is exist,plz use another email",
+          errMessage: "your email is exist,plz use another email",
         });
+      } else {
+        let hashpass = await hashUserPassWord(data.password);
+        await db.User.create({
+          email: data.email,
+          password: hashpass,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          address: data.address,
+          phoneNumber: data.phoneNumber,
+          gender: data.gender === "1" ? true : false,
+          roleId: data.roleId,
+        });
+        resolve({ errCode: 0, message: "ok" });
       }
-      let hashpass = await hashUserPassWord(data.password);
-      await db.User.create({
-        email: data.email,
-        password: hashpass,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        address: data.address,
-        phoneNumber: data.phoneNumber,
-        gender: data.gender === "1" ? true : false,
-        roleId: data.roleId,
-      });
-      resolve({ errCode: 0, message: "ok" });
     } catch (err) {
       reject(err);
     }
