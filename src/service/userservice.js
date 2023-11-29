@@ -128,12 +128,11 @@ let DeleteUser = (id) => {
         });
       } else {
         await db.User.destroy({ where: { id: id } });
+        resolve({
+          errCode: 0,
+          message: "Delete is done",
+        });
       }
-
-      resolve({
-        errCode: 0,
-        message: "Delete is done",
-      });
     } catch (err) {
       reject(err);
     }
@@ -157,6 +156,9 @@ let EditUser = (data) => {
           firstName: data.firstName,
           lastName: data.lastName,
           address: data.address,
+          phoneNumber: data.phoneNumber,
+          gender: data.gender === "1" ? 1 : 0,
+          roleId: data.roleId,
         });
         await user.save();
         resolve({
