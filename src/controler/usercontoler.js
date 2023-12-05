@@ -4,6 +4,7 @@ import {
   createNew,
   DeleteUser,
   EditUser,
+  getAllCodeService,
 } from "../service/userservice";
 import db from "../models";
 const handleLogin = async (req, res) => {
@@ -74,10 +75,26 @@ const handleDeleteUser = async (req, res) => {
     message,
   });
 };
+let getAllCode = async (req, res) => {
+  try {
+    let type = req.body.type;
+    console.log("check req.params:", req.params);
+    console.log("check req.query:", req.query);
+    let data = await getAllCodeService(type);
+    return res.status(200).json(data);
+  } catch (err) {
+    console.log("get all code err:", err);
+    res.status(200).json({
+      errCode: -1,
+      errMessage: "err from Sever",
+    });
+  }
+};
 module.exports = {
   handleLogin,
   handleGetAllUser,
   handleCreateUser,
   handleEditUser,
   handleDeleteUser,
+  getAllCode,
 };

@@ -100,6 +100,14 @@ let createNew = (data) => {
         });
       } else {
         let hashpass = await hashUserPassWord(data.password);
+        let gender = "";
+        if (data.gender === "M") {
+          gender = "M";
+        } else if (data.gender === "F") {
+          gender = "F";
+        } else {
+          gender = "O";
+        }
         await db.User.create({
           email: data.email,
           password: hashpass,
@@ -107,7 +115,7 @@ let createNew = (data) => {
           lastName: data.lastName,
           address: data.address,
           phoneNumber: data.phoneNumber,
-          gender: data.gender === "1" ? true : false,
+          gender: gender,
           roleId: data.roleId,
         });
         resolve({ errCode: 0, message: "ok" });
@@ -151,13 +159,21 @@ let EditUser = (data) => {
         where: { id: data.id },
         raw: false,
       });
+      let gender = "";
+      if (data.gender === "M") {
+        gender = "M";
+      } else if (data.gender === "F") {
+        gender = "F";
+      } else {
+        gender = "O";
+      }
       if (user && data.firstName && data.lastName && data.address) {
         await user.set({
           firstName: data.firstName,
           lastName: data.lastName,
           address: data.address,
           phoneNumber: data.phoneNumber,
-          gender: data.gender === "1" ? 1 : 0,
+          gender: gender,
           roleId: data.roleId,
         });
         await user.save();
@@ -176,6 +192,29 @@ let EditUser = (data) => {
     }
   });
 };
+let getAllCodeService = (typeinput) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!typeinput) {
+        resolve({
+          errCode: 1,
+          errMessage: "missing data input",
+        });
+      } else {
+        let res = {};
+        let allcode = await db.Allcode.findAll({
+          where: { type: typeinput },
+        });
+        console.log(">>>Check allcode:", allcode);
+        res.errCode = 0;
+        res.data = allcode;
+        resolve(res);
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
 module.exports = {
   handleUserLogin,
   checkUseremail,
@@ -183,4 +222,5 @@ module.exports = {
   createNew,
   DeleteUser,
   EditUser,
+  getAllCodeService,
 };

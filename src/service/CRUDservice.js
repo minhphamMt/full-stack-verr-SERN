@@ -13,7 +13,12 @@ let createUser = async (data) => {
         lastName: data.lastname,
         address: data.address,
         phoneNumber: data.phonenumber,
-        gender: data.gender === "1" ? true : false,
+        gender:
+          data.gender === "M"
+            ? "Male"
+            : data.gender === "F"
+            ? "Female"
+            : "Other",
         roleId: data.role,
       });
       resolve("ok create user sucess!");
