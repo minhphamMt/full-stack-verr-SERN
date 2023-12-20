@@ -32,7 +32,7 @@ let initWebRoute = (app) => {
   router.post("/api/create-a-user", handleCreateUser);
   router.put("/api/edit-a-user", handleEditUser);
   router.delete("/api/delete-a-user", handleDeleteUser);
-  router.get("/getAllCode", getAllCode);
+  router.get("/api/getAllCode", getAllCode);
   return app.use("/", router);
 };
 module.exports = initWebRoute;

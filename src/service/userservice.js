@@ -117,6 +117,8 @@ let createNew = (data) => {
           phoneNumber: data.phoneNumber,
           gender: gender,
           roleId: data.roleId,
+          positionId: data.positionId,
+          image: data.img,
         });
         resolve({ errCode: 0, message: "ok" });
       }
@@ -175,6 +177,8 @@ let EditUser = (data) => {
           phoneNumber: data.phoneNumber,
           gender: gender,
           roleId: data.roleId,
+          positionId: data.positionId,
+          image: data.image,
         });
         await user.save();
         resolve({

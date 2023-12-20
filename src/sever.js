@@ -7,8 +7,11 @@ import cors from "cors";
 require("dotenv").config();
 let app = express();
 app.use(cors({ credentials: true, origin: true }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "70mb" }));
+app.use(bodyParser.urlencoded({ limit: "70mb", extended: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+
 configViewEngine(app);
 initWebRoute(app);
 connect();
