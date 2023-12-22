@@ -21,7 +21,7 @@ import {
 let router = express.Router();
 let initWebRoute = (app) => {
   router.get("/", getHomePage);
-  router.get("/minhthu", getMinhThu);
+  router.get("/minhpham", getMinhThu);
   router.get("/CRUD", getCrud);
   router.get("/get-crud", getData);
   router.get("/edit-crud", EditCrud);
