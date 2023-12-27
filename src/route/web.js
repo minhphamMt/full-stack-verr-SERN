@@ -7,7 +7,11 @@ import {
   handleDeleteUser,
   getAllCode,
 } from "../controler/usercontoler";
-import getDoctoHome from "../controler/doctorControler";
+import {
+  getDoctoHome,
+  getAllDoctor,
+  createInfo,
+} from "../controler/doctorControler";
 import {
   getHomePage,
   getMinhThu,
@@ -35,6 +39,8 @@ let initWebRoute = (app) => {
   router.delete("/api/delete-a-user", handleDeleteUser);
   router.get("/api/getAllCode", getAllCode);
   router.get("/api/doctor-home", getDoctoHome);
+  router.get("/api/get-all-doctor", getAllDoctor);
+  router.post("/api/post-info-doctor", createInfo);
   return app.use("/", router);
 };
 module.exports = initWebRoute;

@@ -18,15 +18,15 @@ module.exports = {
         type: Sequelize.STRING,
       },
       doctorId: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.INTEGER,
       },
       specialtyId: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.INTEGER,
       },
       clinicID: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.INTEGER,
       },
       description: {
