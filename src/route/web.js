@@ -11,7 +11,8 @@ import {
   getDoctoHome,
   getAllDoctor,
   createInfo,
-} from "../controler/doctorControler";
+  getDetailDoctorId,
+} from "../controler/DoctorControler";
 import {
   getHomePage,
   getMinhThu,
@@ -41,6 +42,7 @@ let initWebRoute = (app) => {
   router.get("/api/doctor-home", getDoctoHome);
   router.get("/api/get-all-doctor", getAllDoctor);
   router.post("/api/post-info-doctor", createInfo);
+  router.get("/api/get-detail-doctor-by-id", getDetailDoctorId);
   return app.use("/", router);
 };
 module.exports = initWebRoute;

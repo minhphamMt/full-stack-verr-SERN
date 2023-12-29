@@ -64,7 +64,6 @@ let createInfoDoctor = (data) => {
           message: "missing data parameter",
         });
       } else {
-        console.log(">>>check data input:", data);
         await db.MarkDown.create({
           contentHTML: data.contentHTML,
           contentMarkdown: data.contentMarkdown,
@@ -84,5 +83,50 @@ let createInfoDoctor = (data) => {
     }
   });
 };
+let getDetailDoctor = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!id) {
+        resolve({
+          errCode: 1,
+          message: "missing required parameter",
+        });
+      } else {
+        let data = await db.User.findOne({
+          where: { id: id },
+          attributes: {
+            exclude: ["password"],
+          },
 
-module.exports = { getAllDoctorHome, getAllDoctorEdit, createInfoDoctor };
+          include: [
+            {
+              model: db.MarkDown,
+              attributes: ["description", "contentMarkdown", "contentHTML"],
+              // as: "positionData",
+              // attributes: ["valueEn", "valueVi"],
+            },
+            {
+              model: db.Allcode,
+              as: "positionData",
+              attributes: ["valueEn", "valueVi"],
+            },
+          ],
+          raw: true,
+          nest: true,
+        });
+        resolve({
+          errCode: 0,
+          data: data,
+        });
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+module.exports = {
+  getAllDoctorHome,
+  getAllDoctorEdit,
+  createInfoDoctor,
+  getDetailDoctor,
+};
