@@ -15,7 +15,7 @@ module.exports = {
       },
       contentMarkdown: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT("long"),
       },
       doctorId: {
         allowNull: true,

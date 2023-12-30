@@ -3,6 +3,7 @@ import {
   getAllDoctorEdit,
   createInfoDoctor,
   getDetailDoctor,
+  EditDetailService,
 } from "../service/DoctorService";
 let getDoctoHome = async (req, res) => {
   let limit = req.query.limit;
@@ -57,4 +58,21 @@ let getDetailDoctorId = async (req, res) => {
     });
   }
 };
-module.exports = { getDoctoHome, getAllDoctor, createInfo, getDetailDoctorId };
+let handleEditDetail = async (req, res) => {
+  try {
+    let response = await EditDetailService(req.body);
+    return res.status(200).json(response);
+  } catch (err) {
+    return res.status(200).json({
+      errCode: -1,
+      message: "Err from sever",
+    });
+  }
+};
+module.exports = {
+  getDoctoHome,
+  getAllDoctor,
+  createInfo,
+  getDetailDoctorId,
+  handleEditDetail,
+};

@@ -12,6 +12,7 @@ import {
   getAllDoctor,
   createInfo,
   getDetailDoctorId,
+  handleEditDetail,
 } from "../controler/DoctorControler";
 import {
   getHomePage,
@@ -43,6 +44,7 @@ let initWebRoute = (app) => {
   router.get("/api/get-all-doctor", getAllDoctor);
   router.post("/api/post-info-doctor", createInfo);
   router.get("/api/get-detail-doctor-by-id", getDetailDoctorId);
+  router.put("/api/edit-detail-doctor", handleEditDetail);
   return app.use("/", router);
 };
 module.exports = initWebRoute;

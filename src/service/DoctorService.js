@@ -124,9 +124,48 @@ let getDetailDoctor = (id) => {
     }
   });
 };
+let EditDetailService = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log(">>>check data backend:", data);
+      if (!data) {
+        resolve({
+          errCode: 1,
+          message: "missing data input",
+        });
+      } else {
+        let doctor = await db.MarkDown.findOne({
+          where: { doctorId: data.doctorId },
+          raw: false,
+        });
+        console.log(">>>check doctor:", doctor);
+        if (doctor) {
+          await doctor.set({
+            contentHTML: data.contentHTML,
+            contentMarkdown: data.contentMarkdown,
+            description: data.description,
+          });
+          await doctor.save();
+          resolve({
+            errCode: 0,
+            message: "update info is done",
+          });
+        } else {
+          resolve({
+            errCode: 2,
+            message: "something wrong!",
+          });
+        }
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
 module.exports = {
   getAllDoctorHome,
   getAllDoctorEdit,
   createInfoDoctor,
   getDetailDoctor,
+  EditDetailService,
 };
