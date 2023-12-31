@@ -17,7 +17,7 @@ let handleUserLogin = (email, password) => {
             userdata.errcode = 0;
             userdata.errorMessage = "ok pass is done";
             delete user["password"];
-            delete user["roleId"];
+            delete user["image"];
             userdata.user = user;
           } else {
             userdata.errcode = 3;
@@ -151,6 +151,7 @@ let DeleteUser = (id) => {
 let EditUser = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
+      console.log(">>>check data:", data);
       if (!data.id) {
         resolve({
           errCode: 3,
