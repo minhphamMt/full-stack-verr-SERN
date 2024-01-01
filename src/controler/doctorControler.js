@@ -4,6 +4,7 @@ import {
   createInfoDoctor,
   getDetailDoctor,
   EditDetailService,
+  bulkCreateScheduleService,
 } from "../service/DoctorService";
 let getDoctoHome = async (req, res) => {
   let limit = req.query.limit;
@@ -69,10 +70,22 @@ let handleEditDetail = async (req, res) => {
     });
   }
 };
+let bulkCreateSchedule = async (req, res) => {
+  try {
+    let info = await bulkCreateScheduleService(req.body);
+    return res.status(200).json(info);
+  } catch (err) {
+    return res.status(200).json({
+      errCode: -1,
+      message: "Err from sever",
+    });
+  }
+};
 module.exports = {
   getDoctoHome,
   getAllDoctor,
   createInfo,
   getDetailDoctorId,
   handleEditDetail,
+  bulkCreateSchedule,
 };

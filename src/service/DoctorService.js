@@ -1,4 +1,7 @@
 import db from "../models";
+require("dotenv").config();
+import _ from "lodash";
+const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 let getAllDoctorHome = (limit) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -127,7 +130,6 @@ let getDetailDoctor = (id) => {
 let EditDetailService = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log(">>>check data backend:", data);
       if (!data) {
         resolve({
           errCode: 1,
@@ -138,7 +140,7 @@ let EditDetailService = (data) => {
           where: { doctorId: data.doctorId },
           raw: false,
         });
-        console.log(">>>check doctor:", doctor);
+
         if (doctor) {
           await doctor.set({
             contentHTML: data.contentHTML,
@@ -162,10 +164,56 @@ let EditDetailService = (data) => {
     }
   });
 };
+let bulkCreateScheduleService = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!data.arrSchedule || !data.doctorId || !data.date) {
+        resolve({
+          errCode: 1,
+          message: "Missing data ",
+        });
+      } else {
+        let schedule = data.arrSchedule;
+        if (schedule && schedule.length > 0) {
+          schedule = schedule.map((item) => {
+            item.maxNumber = MAX_NUMBER_SCHEDULE;
+            return item;
+          });
+        }
+        let existing = await db.Schedule.findAll({
+          where: { doctorId: data.doctorId, date: data.date },
+          attributes: ["timeType", "date", "doctorId", "maxNumber"],
+          raw: true,
+        });
+        if (existing && existing.length > 0) {
+          existing = existing.map((item) => {
+            item.date = new Date(item.date).getTime();
+            return item;
+          });
+        }
+        let tocreate = _.differenceWith(schedule, existing, (a, b) => {
+          return a.timeType === b.timeType && a.date === b.date;
+        });
+        console.log(">>.check to create", tocreate);
+        console.log(">>>check esis:", existing);
+        if (tocreate && tocreate.length > 0) {
+          await db.Schedule.bulkCreate(tocreate);
+        }
+        resolve({
+          errCode: 0,
+          message: "ok it done",
+        });
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
 module.exports = {
   getAllDoctorHome,
   getAllDoctorEdit,
   createInfoDoctor,
   getDetailDoctor,
   EditDetailService,
+  bulkCreateScheduleService,
 };
