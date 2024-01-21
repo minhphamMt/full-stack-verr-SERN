@@ -14,6 +14,7 @@ import {
   getDetailDoctorId,
   handleEditDetail,
   bulkCreateSchedule,
+  getScheduleByDate,
 } from "../controler/DoctorControler";
 import {
   getHomePage,
@@ -48,6 +49,7 @@ let initWebRoute = (app) => {
   router.put("/api/edit-detail-doctor", handleEditDetail);
   //tạo lịch khám
   router.post("/api/bulk-create-schedule", bulkCreateSchedule);
+  router.get("/api/get-schedule-doctor", getScheduleByDate);
   return app.use("/", router);
 };
 module.exports = initWebRoute;

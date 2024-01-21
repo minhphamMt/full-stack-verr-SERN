@@ -1,6 +1,6 @@
 import db from "../models";
 require("dotenv").config();
-import _ from "lodash";
+import _, { reject } from "lodash";
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 let getAllDoctorHome = (limit) => {
   return new Promise(async (resolve, reject) => {
@@ -185,23 +185,56 @@ let bulkCreateScheduleService = (data) => {
           attributes: ["timeType", "date", "doctorId", "maxNumber"],
           raw: true,
         });
-        if (existing && existing.length > 0) {
-          existing = existing.map((item) => {
-            item.date = new Date(item.date).getTime();
-            return item;
-          });
-        }
+        // if (existing && existing.length > 0) {
+        //   existing = existing.map((item) => {
+        //     item.date = data.date.getTime();
+        //     return item;
+        //   });
+        // }
+        // let tocreate = _.differenceWith(schedule, existing, (a, b) => {
+        //   return a.timeType === b.timeType && a.date === b.date;
+        // });
         let tocreate = _.differenceWith(schedule, existing, (a, b) => {
-          return a.timeType === b.timeType && a.date === b.date;
+          return a.timeType === b.timeType && a.date !== b.date;
         });
-        console.log(">>.check to create", tocreate);
+        console.log(">>>Check schedule:", schedule);
         console.log(">>>check esis:", existing);
+        console.log(">>.check to create", tocreate);
         if (tocreate && tocreate.length > 0) {
           await db.Schedule.bulkCreate(tocreate);
         }
         resolve({
           errCode: 0,
           message: "ok it done",
+        });
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+let getScheduleDate = (id, date) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!id || !date) {
+        resolve({
+          errCode: 1,
+          message: "missing data parameter",
+        });
+      } else {
+        let data = await db.Schedule.findAll({
+          where: {
+            doctorId: id,
+            date: date,
+          },
+        });
+        if (!data) {
+          data = [];
+        }
+        resolve({
+          errCode: 0,
+          data,
+          message: "find is done",
         });
       }
     } catch (err) {
@@ -216,4 +249,5 @@ module.exports = {
   getDetailDoctor,
   EditDetailService,
   bulkCreateScheduleService,
+  getScheduleDate,
 };
