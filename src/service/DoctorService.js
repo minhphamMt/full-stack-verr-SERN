@@ -227,6 +227,15 @@ let getScheduleDate = (id, date) => {
             doctorId: id,
             date: date,
           },
+          include: [
+            {
+              model: db.Allcode,
+              as: "TimeData",
+              attributes: ["valueEn", "valueVi"],
+            },
+          ],
+          raw: true,
+          nest: true,
         });
         if (!data) {
           data = [];
