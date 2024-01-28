@@ -59,6 +59,7 @@ let getAllDoctorEdit = () => {
 };
 let createInfoDoctor = (data) => {
   return new Promise(async (resolve, reject) => {
+    console.log(">>>check data:", data);
     try {
       if (!data.contentMarkdown || !data.contentHTML) {
         console.log("check data err:", data);
@@ -74,6 +75,15 @@ let createInfoDoctor = (data) => {
           doctorId: data.doctorId,
           // specialtyId: data.specialtyId,
           // clinicID: data.clinicID,
+        });
+        await db.DoctorInfo.create({
+          doctorId: data.doctorId,
+          priceId: data.priceId,
+          provinceId: data.provinceId,
+          paymentId: data.paymentId,
+          addressClinic: data.addressClinic,
+          nameClinic: data.nameClinic,
+          note: data.note,
         });
 
         resolve({
@@ -100,7 +110,6 @@ let getDetailDoctor = (id) => {
           attributes: {
             exclude: ["password"],
           },
-
           include: [
             {
               model: db.MarkDown,
@@ -112,6 +121,10 @@ let getDetailDoctor = (id) => {
               model: db.Allcode,
               as: "positionData",
               attributes: ["valueEn", "valueVi"],
+            },
+            {
+              model: db.DoctorInfo,
+              attributes: ["addressClinic", "nameClinic", "note"],
             },
           ],
           raw: true,
@@ -129,6 +142,7 @@ let getDetailDoctor = (id) => {
 };
 let EditDetailService = (data) => {
   return new Promise(async (resolve, reject) => {
+    console.log(">>>check data:", data);
     try {
       if (!data) {
         resolve({
@@ -140,7 +154,10 @@ let EditDetailService = (data) => {
           where: { doctorId: data.doctorId },
           raw: false,
         });
-
+        let doctorinfo = await db.DoctorInfo.findOne({
+          where: { doctorId: data.doctorId },
+          raw: false,
+        });
         if (doctor) {
           await doctor.set({
             contentHTML: data.contentHTML,
@@ -148,6 +165,15 @@ let EditDetailService = (data) => {
             description: data.description,
           });
           await doctor.save();
+          await doctorinfo.set({
+            priceId: data.priceId,
+            provinceId: data.provinceId,
+            paymentId: data.paymentId,
+            addressClinic: data.addressClinic,
+            nameClinic: data.nameClinic,
+            note: data.note,
+          });
+          await doctorinfo.save();
           resolve({
             errCode: 0,
             message: "update info is done",
